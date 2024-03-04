@@ -150,6 +150,7 @@ def so_analysis(request, app_dic, rescan, api):
     context['average_cvss'] = None
     context['dynamic_analysis_done'] = False
     context['virus_total'] = None
+    context['abusech'] = ""
     if settings.VT_ENABLED:
         vt = VirusTotal.VirusTotal()
         context['virus_total'] = vt.get_result(

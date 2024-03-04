@@ -514,6 +514,67 @@
       </div>
   </div>
 
+  <!-- Abusech-->
+  {% if abusech %}
+    <a id="information" class="anchor"></a>
+    <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title"></h5>
+                    <div class="row">
+                    <div class="col-6">
+                    <p><strong><i class="fas fa-info"></i> MALWAREBAZAAR</strong></p>
+                    {% if abusech.byhash %}
+                    <span class="badge bg-danger">MATCHES FOUND</span><br/>
+                    <span class="badge bg-danger">App Name</span>
+                    <strong>{{ abusech.byhash.file_name }}</strong><br/>
+                    <span class="badge bg-danger">SHA256</span>
+                    <strong>{{ abusech.byhash.sha256_hash }}</strong><br/>
+                    <span class="badge bg-danger">First Seen</span>
+                    <strong>{{ abusech.byhash.first_seen }}</strong><br/>
+                    <span class="badge bg-danger">Signature</span>
+                    <strong>{{ abusech.byhash.signature }}</strong><br/>
+                    <span class="badge bg-danger">Vendor Intel</span><br/>
+                    {% for key, value in abusech.byhash.vendor_intel.items %}
+                      {% if 'link' in value or 'url' in value %}
+                      <div><strong>{{ key }}</strong>
+                        {% for k,v in value.items %}
+                          {% if k == 'url' or k == 'link' %}
+                          <a href="{{ v }}">Link to vendor report</a><br/>
+                          {% elif k in 'detection score verdict malware_family tags score' %}
+                          {{ k }}: {{ v }}|
+                          {% endif %}
+                        {% endfor %}</div>
+                      {% endif %}
+                    {% endfor %}<br/>
+                    {% else %}
+                    <span class="badge bg-success">No matches found</span>
+                    {% endif %}
+                  </div>
+                  <div class="col-4">
+                    <p><strong><i class="fas fa-certificate"></i> CERTIFICATE CHECK </strong></p>
+                    {% if abusech.cert %}
+                    <span class="badge bg-danger">CERTIFICATE USED TO SIGN MALWARE</span></br>
+                    <div>{% for dict in abusech.cert.code_sign %}
+                      {% for k,v in dict.items %}
+                        <strong>{{ k }}</strong>: {{ v }}</br>
+                      {% endfor %}
+                    {% endfor %}</div>
+                    {% else %}
+                    <span class="badge bg-success">No matches found</span>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  {% endif %}
+
   {% if app_type not in 'jar,aar,so' %}
   <!-- Boxes -->
    <div class="container-fluid">

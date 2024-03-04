@@ -116,7 +116,7 @@ def binskim(sample, signature):
     ]
 
     # Execute process
-    pipe = subprocess.Popen(subprocess.list2cmdline(params))
+    pipe = subprocess.Popen(params)
     pipe.wait()  # Wait for the process to finish..
 
     # Open the file and return the json
@@ -165,7 +165,7 @@ def binscope(sample, signature):
     )
 
     # Execute process
-    p = subprocess.Popen(subprocess.list2cmdline(params))
+    p = subprocess.Popen(params)
     p.wait()  # Wait for the process to finish..
 
     # Open the file and return the json

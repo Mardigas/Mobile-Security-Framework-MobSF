@@ -298,7 +298,7 @@ def binskim(name, bin_an_dic, run_local=False, app_dir=None):
         ]
 
         # Execute process
-        pipe = subprocess.Popen(subprocess.list2cmdline(params))
+        pipe = subprocess.Popen(params)
         pipe.wait()  # Wait for the process to finish..
 
         # Open the file and return the json
@@ -467,7 +467,7 @@ def binscope(name, bin_an_dic, run_local=False, app_dir=None):
         )
 
         # Execute process
-        p = subprocess.Popen(subprocess.list2cmdline(params))
+        p = subprocess.Popen(params)
         p.wait()  # Wait for the process to finish..
 
         # Open the file and return the json

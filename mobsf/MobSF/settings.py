@@ -440,4 +440,9 @@ else:
     CORELLIUM_PROJECT_ID = os.getenv('MOBSF_CORELLIUM_PROJECT_ID', '')
     # CORELLIUM_PROJECT_ID is optional, MobSF will use any available project id
     # ===============================================
+
+    # =======ABUSECH API=============================
+    ABUSECH_API_KEY = os.getenv('MOBSF_ABUSECH_API_KEY', '')
+    ABUSECH_ENABLED = os.getenv('MOBSF_ABUSECH_ENABLED', '')
+    # ===============================================
     # ^CONFIG-END^: Do not edit this line
