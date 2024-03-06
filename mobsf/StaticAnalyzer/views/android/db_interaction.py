@@ -13,6 +13,8 @@ from mobsf.StaticAnalyzer.views.common.suppression import (
     process_suppression_manifest,
 )
 
+from customscripts.abusech import abusech_api
+
 """Module holding the functions for the db."""
 
 
@@ -82,6 +84,8 @@ def get_context_from_db_entry(db_entry: QuerySet) -> dict:
             'playstore_details': python_dict(db_entry[0].PLAYSTORE_DETAILS),
             'secrets': python_list(db_entry[0].SECRETS),
         }
+        if db_entry[0].ABUSECH:
+            context['abusech'] = python_dict(db_entry[0].ABUSECH)
         return context
     except Exception:
         logger.exception('Fetching from DB')
@@ -154,6 +158,8 @@ def get_context_from_analysis(app_dic,
             'playstore_details': app_dic['playstore'],
             'secrets': code_an_dic['secrets'],
         }
+        if 'abusech' in app_dic:
+            context['abusech'] = app_dic['abusech']
         return context
     except Exception:
         logger.exception('Rendering to Template')
@@ -218,6 +224,9 @@ def save_or_update(update_type,
             'NETWORK_SECURITY': man_an_dic['network_security'],
             'SECRETS': code_an_dic['secrets'],
         }
+        if 'abusech' in app_dic:
+            values['ABUSECH'] = app_dic['abusech']
+
         if update_type == 'save':
             db_entry = StaticAnalyzerAndroid.objects.filter(
                 MD5=app_dic['md5'])

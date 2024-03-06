@@ -91,6 +91,7 @@ from mobsf.StaticAnalyzer.views.common.appsec import (
     get_android_dashboard,
 )
 
+from customscripts.abusech import abusech_api
 
 logger = logging.getLogger(__name__)
 
@@ -280,6 +281,20 @@ def static_analyzer(request, checksum, api=False):
                     'Performing Malware Check on extracted Domains')
                 code_an_dic['domains'] = MalwareDomainCheck().scan(
                     code_an_dic['urls_list'])
+
+                # Abusech api
+                if settings.ABUSECH_ENABLED:
+                    abusech_api_byhash = abusech_api.get_report_by_hash(app_dic["sha256"])
+                    abusech_api_cert = abusech_api.get_by_certificate_serial(cert_dic)
+                    app_dic["abusech"] = {
+                        "byhash": abusech_api_byhash,
+                        "cert": abusech_api_cert
+                    }
+                else:
+                    app_dic["abusech"] = {
+                        "byhash": "",
+                        "cert": ""
+                    }
 
                 app_dic['zipped'] = 'apk'
                 context = save_get_ctx(
