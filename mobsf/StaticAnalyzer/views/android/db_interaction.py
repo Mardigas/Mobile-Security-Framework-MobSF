@@ -14,6 +14,7 @@ from mobsf.StaticAnalyzer.views.common.suppression import (
 )
 
 from customscripts.abusech import abusech_api
+from customscripts.rf import predict
 
 """Module holding the functions for the db."""
 
@@ -86,6 +87,11 @@ def get_context_from_db_entry(db_entry: QuerySet) -> dict:
         }
         if db_entry[0].ABUSECH:
             context['abusech'] = python_dict(db_entry[0].ABUSECH)
+
+        res = predict.predict(context)
+        for line in context:
+            print(line)
+
         return context
     except Exception:
         logger.exception('Fetching from DB')
