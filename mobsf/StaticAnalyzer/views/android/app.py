@@ -5,13 +5,9 @@ import re
 import logging
 from pathlib import Path
 
-from androguard.core import (
-    androconf,
-    apk,
-)
+from androguard.core.bytecodes import apk
 
 
-androconf.logger.remove()
 logger = logging.getLogger(__name__)
 logging.getLogger('androguard').setLevel(logging.ERROR)
 

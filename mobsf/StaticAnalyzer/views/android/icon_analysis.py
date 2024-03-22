@@ -11,10 +11,7 @@ import subprocess
 
 from lxml import etree
 
-from androguard.core import (
-    androconf,
-    axml,
-)
+from androguard.core.bytecodes import axml
 
 from django.conf import settings
 
@@ -24,7 +21,6 @@ from mobsf.MobSF.utils import (
     is_path_traversal,
 )
 
-androconf.logger.remove()
 logger = logging.getLogger(__name__)
 logging.getLogger('androguard').setLevel(logging.ERROR)
 

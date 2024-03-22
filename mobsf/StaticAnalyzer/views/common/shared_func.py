@@ -80,8 +80,9 @@ def unzip(app_path, ext_path):
             for fileinfo in zipptr.infolist():
                 filename = fileinfo.filename
                 for name in invalid_names:
-                    rule = f".*\/(?i){name}\..*"
-                    if re.match(rule, filename):
+                    rule = f".*\/{name}\..*"
+                    print(filename)
+                    if re.match(rule, filename, re.IGNORECASE):
                         contains_invalid_name = True
                 if contains_invalid_name:
                     continue
