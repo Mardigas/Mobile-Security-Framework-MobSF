@@ -419,6 +419,15 @@
                       <span class="badge bg-success">VirusTotal Detection</span> <strong>{{ virus_total.positives }}/{{ virus_total.total }}</strong><br/>
                     {% endif %}
                   {% endif %}
+                  {% if rf %}
+                    {% if rf.0 == 0 %}
+                      <span class="badge bg-success">ML score: GOODWARE</span>
+                      <b>{{ rf.1 }}%</b><br/>
+                    {% else %}
+                      <span class="badge bg-danger">ML score: MALWARE</span>
+                      <b>{{ rf.1 }}%</b><br/>
+                    {% endif %}
+                  {% endif %}
                 </p>
                 {% if app_type not in 'so' %}
                   <p> <a href="{% url 'appsec_dashboard' checksum=md5 %}" class="btn btn-outline-primary btn-sm" role="button"><i class="fas fa-user-shield"></i> MobSF Scorecard</a></p>
