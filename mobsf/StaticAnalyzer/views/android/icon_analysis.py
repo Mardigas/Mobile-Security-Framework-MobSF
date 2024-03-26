@@ -20,9 +20,12 @@ from mobsf.MobSF.utils import (
     is_file_exists,
     is_path_traversal,
 )
+from mobsf.StaticAnalyzer.tools.androguard4 import (
+    axml,
+)
+
 
 logger = logging.getLogger(__name__)
-logging.getLogger('androguard').setLevel(logging.ERROR)
 
 
 # relative to res folder
