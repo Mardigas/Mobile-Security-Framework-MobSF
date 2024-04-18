@@ -2439,10 +2439,11 @@
 <script src="{% static "datatables/js/vfs_fonts.js" %}"></script>
 <script src="{% static "datatables/js/datatables.combined.min.js" %}"></script>
 <script src="{% static "others/js/datatables_init.js" %}"></script>
-<script src="{% static "amcharts/core.js" %}"></script>
-<script src="{% static "amcharts/maps.js" %}"></script>
-<script src="{% static "amcharts/worldIndiaLow.js" %}"></script>
-<script src="{% static "amcharts/animated.js" %}"></script>
+<script src="{% static "amcharts5/map.js" %}"></script>
+<script src="{% static "amcharts5/index.js" %}"></script>
+<script src="{% static "amcharts5/xy.js" %}"></script>
+<script src="{% static "amcharts5/themes/Animated.js" %}"></script>
+<script src="{% static "amcharts5/geodata/worldLow.js" %}"></script>
 <script src="{% static "adminlte/plugins/sweetalert2/sweetalert2.min.js" %}"></script>
 <script>
   var list_suppressions_url = '{% url 'list_suppressions' %}';
@@ -2488,79 +2489,70 @@
 
 
 <script>
-// Themes begin
-am4core.useTheme(am4themes_animated);
-// Themes end
+var root = am5.Root.new("chartdiv");
+var chart = root.container.children.push(
+  am5map.MapChart.new(root, {})
+);
 
-// Create map instance
-var chart = am4core.create("chartdiv", am4maps.MapChart);
+root.setThemes([
+  am5themes_Animated.new(root)
+]);
 
-// Set map definition
-chart.geodata = am4geodata_worldIndiaLow;
+var chart = root.container.children.push(
+  am5map.MapChart.new(root, {
+    projection: am5map.geoNaturalEarth1()
+  })
+);
 
-// Set projection
-chart.projection = new am4maps.projections.Miller();
+var polygonSeries = chart.series.push(
+  am5map.MapPolygonSeries.new(root, {
+    geoJSON: am5geodata_worldLow,
+    fill: root.interfaceColors.get("stroke"),
+    exclude: ["AQ"]
+  })
+);
 
-// Create map polygon series
-var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+polygonSeries.mapPolygons.template.setAll({
+  tooltipText: "{name}",
+  interactive: true,
+});
 
-// Exclude Antartica
-polygonSeries.exclude = ["AQ"];
+polygonSeries.mapPolygons.template.states.create("hover", {
+  fillOpacity: 0.7,
+  fill: am5.color(0x78d3fe)
+});
 
-// Make map load polygon (like country names) data from GeoJSON
-polygonSeries.useGeodata = true;
+var pointSeries = chart.series.push(am5map.MapPointSeries.new(root, {
+  latitudeField: "lat",
+  longitudeField: "long"
+}));
 
-// Configure series
-var polygonTemplate = polygonSeries.mapPolygons.template;
-polygonTemplate.tooltipText = "{name}";
-polygonTemplate.polygon.fillOpacity = 0.6;
+var colorSet = am5.ColorSet.new(root, {
+});
 
-// Create hover state and set alternative fill color
-var hs = polygonTemplate.states.create("hover");
-hs.properties.fill = chart.colors.getIndex(0);
-
-// Add image series
-var imageSeries = chart.series.push(new am4maps.MapImageSeries());
-imageSeries.mapImages.template.propertyFields.longitude = "longitude";
-imageSeries.mapImages.template.propertyFields.latitude = "latitude";
-imageSeries.mapImages.template.tooltipText = "{title}";
-imageSeries.mapImages.template.propertyFields.url = "url";
-
-var circle = imageSeries.mapImages.template.createChild(am4core.Circle);
-circle.radius = 3;
-circle.propertyFields.fill = "color";
-
-var circle2 = imageSeries.mapImages.template.createChild(am4core.Circle);
-circle2.radius = 3;
-circle2.propertyFields.fill = "color";
-
-
-circle2.events.on("inited", function(event){
-  animateBullet(event.target);
-})
-
-function animateBullet(circle) {
-    var animation = circle.animate([{ property: "scale", from: 1, to: 5 }, { property: "opacity", from: 1, to: 0 }], 1000, am4core.ease.circleOut);
-    animation.events.on("animationended", function(event){
-      animateBullet(event.target.object);
+pointSeries.bullets.push(function() {
+  return am5.Bullet.new(root, {
+    sprite: am5.Circle.new(root, {
+      radius: 4,
+      fill: colorSet.next(),
+      tooltipText: "{title}"
     })
-}
+  });
+});
 
-var colorSet = new am4core.ColorSet();
-imageSeries.data = [
-{% if domains %}
-  {% for domain, details in domains.items %}
-    {% if details|key:"geolocation" %}
-    {
-      'title': '{{details|key:"geolocation"|key:"country_long"}}/{{details|key:"geolocation"|key:"region"}}',
-      'latitude': {{details|key:"geolocation"|key:"latitude"}},
-      'longitude': {{details|key:"geolocation"|key:"longitude"}},
-      'color':colorSet.next()
-    },
-    {% endif %}
-  {% endfor %}
-{% endif %}
-];
+pointSeries.data.setAll([
+  {% if domains %}
+    {% for domain, details in domains.items %}
+      {% if details|key:"geolocation" %}
+      { 
+        'title': '{{details|key:"geolocation"|key:"country_long"}}/{{details|key:"geolocation"|key:"region"}}',
+        'lat': {{details|key:"geolocation"|key:"latitude"}},
+        'long': {{details|key:"geolocation"|key:"longitude"}},
+      },
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+]);
 </script>
 
 {% endblock %}
