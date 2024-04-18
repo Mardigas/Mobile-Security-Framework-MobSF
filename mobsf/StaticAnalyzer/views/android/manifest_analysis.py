@@ -108,6 +108,37 @@ def _check_url(host, w_url):
                 'status_code': None,
                 'status': False}
 
+def custom_check(rule_name, ns, kwargs):
+    """Custom rule check."""
+    # Checks if main activity is decleared with LAUNCHER or MAIN in manifest
+    if rule_name == "pixpirate":
+        main_found = any(a.getAttribute(f'{ns}:name') == "android.intent.action.MAIN"
+                         for a in kwargs["actions"])
+        launcher_found = any(c.getAttribute(f'{ns}:name') == "android.intent.category.LAUNCHER"
+                              for node in kwargs["node"]
+                              for c in node.getElementsByTagName('category'))
+        
+        if not launcher_found and not main_found:
+            return rule_name
+    
+    # Checks if accessibility service is decleared in manifest
+    elif rule_name == "accessibility_service":
+        intent_found = any(i.getAttribute(f'{ns}:name') == "android.accessibilityservice.AccessibilityService"
+                           for i in kwargs["actions"])
+        service_permission_found = any(s.getAttribute(f'{ns}:permission') == "android.permission.BIND_ACCESSIBILITY_SERVICE"
+                                       for s in kwargs["services"])
+        
+        if intent_found or service_permission_found:
+            return rule_name
+    
+    # Checks if device admin is decleared in manifest
+    elif rule_name == "bind_device_admin":
+        receiver_permission_found = any(r.getAttribute(f'{ns}:permission') == "android.permission.BIND_DEVICE_ADMIN"
+                                        for r in kwargs["receivers"])
+        action_found = any(a.getAttribute(f'{ns}:name') == "android.app.action.DEVICE_ADMIN_ENABLED"
+                           for a in kwargs["actions"])
+        if receiver_permission_found or action_found:
+            return rule_name
 
 def get_browsable_activities(node, ns):
     """Get Browsable Activities."""
@@ -197,6 +228,17 @@ def manifest_analysis(mfxml, ns, man_data_dic, src_type, app_dir):
         permission_dict = {}
         do_netsec = False
         debuggable = False
+
+        # CUSTOM CHECKS
+        for rule_name, func in [
+            ('pixpirate', lambda f: custom_check(f, ns, {"actions": actions, "node": applications})),
+            ('accessibility_service', lambda f: custom_check(f, ns, {"actions": actions, "services": mfxml.getElementsByTagName('service')})),
+            ('bind_device_admin', lambda f: custom_check(f, ns, {"actions": actions, "receivers": mfxml.getElementsByTagName('receiver')}))
+        ]:
+            res = func(rule_name)
+            if res:
+                ret_list.append((res, (), ()))
+
         # PERMISSION
         for permission in permissions:
             if permission.getAttribute(f'{ns}:protectionLevel'):
@@ -748,6 +790,7 @@ def manifest_analysis(mfxml, ns, man_data_dic, src_type, app_dir):
                 dataport = data.getAttribute(f'{ns}:port')
                 ret_list.append(('sms_receiver_port_found', (dataport,), ()))
         # INTENTS
+        intent_names = list()
         for intent in intents:
             if intent.getAttribute(f'{ns}:priority').isdigit():
                 value = intent.getAttribute(f'{ns}:priority')

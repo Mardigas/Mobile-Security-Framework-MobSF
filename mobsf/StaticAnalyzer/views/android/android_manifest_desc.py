@@ -1,4 +1,31 @@
 MANIFEST_DESC = {
+    'accessibility_service': {
+        'title': ('App uses accessibility services'),
+        'level': 'high',
+        'description': ('Accessibility services can see everything displayed on the screen and perform '
+                        'actions on behalf of the user. Malicious applications can exploit this to '
+                        'steal user data, impersonate apps, or perform other malicious actions. '
+                        'Combined with Device Admin privileges, malware can effectively take control '
+                        'of the device.'),
+        'name': ('App uses accessibility services'),
+    },
+    'pixpirate': {
+        'title': ('App does not declare main activity'),
+        'level': 'high',
+        'description': ('If the main activity is not declared with "android.intent.action.MAIN" '
+                    'and "android.intent.category.LAUNCHER" in the manifest, no app icon '
+                    'appears on the home screen, making the app completely invisible to the user.'),
+        'name': ('App does not declare main activity'),
+    },
+    'bind_device_admin': {
+        'title': ('App uses device admin'),
+        'level': 'high',
+        'description': ('Device admin privileges allow an app to perform certain actions on the device, '
+                        'such as uninstalling/intalling apps, changing system settings '
+                        'or locking/wiping the device. Malicious applications can abuse those privileges '
+                        'for persistence by preventing app uninstall or to create ransomware.'),
+        'name': ('App uses device admin'),
+    },
     'well_known_assetlinks': {
         'title': ('App Link assetlinks.json file not found'
                   '<br>[android:name=%s]<br>[android:host=%s]'),
