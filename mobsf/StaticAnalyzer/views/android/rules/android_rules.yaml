@@ -751,3 +751,16 @@
     masvs: storage-14
     owasp-mobile: m9
     ref: https://github.com/MobSF/owasp-mstg/blob/master/Document/0x05d-Testing-Data-Storage.md#checking-memory-for-sensitive-data-mstg-storage-10
+- id: ascii_encoding
+  message: >-
+    ASCII character encoding detected.
+  input_case: exact
+  pattern: >-
+    {(?:3[2-2]|4[0-9]|5[0-9]|6[0-9]|7[0-9]|8[0-9]|9[0-9]|1\d{2}|2[0-4]\d|25[0-5])(?:, ?(?:3[2-2]|4[0-9]|5[0-9]|6[0-9]|7[0-9]|8[0-9]|9[0-9]|1\d{2}|2[0-4]\d|25[0-5]))*}
+  severity: info
+  type: Regex
+  metadata:
+    cvss: ""
+    cwe: "Found encoded characters that malware often uses to hide malicious domains"
+    masvs: "CUSTOM RULE"
+    owasp-mobile: ""
