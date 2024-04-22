@@ -790,7 +790,6 @@ def manifest_analysis(mfxml, ns, man_data_dic, src_type, app_dir):
                 dataport = data.getAttribute(f'{ns}:port')
                 ret_list.append(('sms_receiver_port_found', (dataport,), ()))
         # INTENTS
-        intent_names = list()
         for intent in intents:
             if intent.getAttribute(f'{ns}:priority').isdigit():
                 value = intent.getAttribute(f'{ns}:priority')
