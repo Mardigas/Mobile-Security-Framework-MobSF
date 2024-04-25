@@ -29,7 +29,7 @@ MANIFEST_DESC = {
         'level': 'high',
         'description': ('Device admin privileges allow an app '
                         'to perform certain actions on the device, '
-                        'such as uninstalling/intalling apps, '
+                        'such as uninstalling/installing apps, '
                         'changing system settings or locking/wiping '
                         'the device. Malicious applications can abuse '
                         'those privileges for persistence by preventing '
