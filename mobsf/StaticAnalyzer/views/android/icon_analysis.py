@@ -11,8 +11,6 @@ import subprocess
 
 from lxml import etree
 
-from androguard.core.bytecodes import axml
-
 from django.conf import settings
 
 from mobsf.MobSF.utils import (

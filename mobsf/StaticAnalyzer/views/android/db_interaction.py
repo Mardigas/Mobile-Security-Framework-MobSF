@@ -13,7 +13,6 @@ from mobsf.StaticAnalyzer.views.common.suppression import (
     process_suppression_manifest,
 )
 
-from customscripts.abusech import abusech_api
 from customscripts.rf import predict
 
 """Module holding the functions for the db."""
@@ -88,7 +87,7 @@ def get_context_from_db_entry(db_entry: QuerySet) -> dict:
         if db_entry[0].ABUSECH:
             context['abusech'] = python_dict(db_entry[0].ABUSECH)
 
-        context.update({"rf": predict.predict(context)})
+        context.update({'rf': predict.predict(context)})
 
         return context
     except Exception:
@@ -164,8 +163,7 @@ def get_context_from_analysis(app_dic,
         }
         if 'abusech' in app_dic:
             context['abusech'] = app_dic['abusech']
-            
-        context.update({"rf": predict.predict(context)})
+        context.update({'rf': predict.predict(context)})
         return context
     except Exception:
         logger.exception('Rendering to Template')

@@ -92,6 +92,7 @@ from mobsf.StaticAnalyzer.views.common.appsec import (
 )
 
 from customscripts.abusech import abusech_api
+from customscripts.apkpure import apkpure_api
 
 logger = logging.getLogger(__name__)
 
@@ -284,17 +285,46 @@ def static_analyzer(request, checksum, api=False):
 
                 # Abusech api
                 if settings.ABUSECH_ENABLED:
-                    abusech_api_byhash = abusech_api.get_report_by_hash(app_dic["sha256"])
-                    abusech_api_cert = abusech_api.get_by_certificate_serial(cert_dic)
-                    app_dic["abusech"] = {
-                        "byhash": abusech_api_byhash,
-                        "cert": abusech_api_cert
+                    abusech_api_byhash = abusech_api.get_report_by_hash(
+                        app_dic['sha256'],
+                    )
+                    abusech_api_cert = abusech_api.get_by_certificate_serial(
+                        cert_dic,
+                    )
+                    app_dic['abusech'] = {
+                        'byhash': abusech_api_byhash,
+                        'cert': abusech_api_cert,
+                        'apkpure': '',
                     }
                 else:
-                    app_dic["abusech"] = {
-                        "byhash": "",
-                        "cert": ""
+                    app_dic['abusech'] = {
+                        'byhash': '',
+                        'cert': '',
+                        'apkpure': '',
                     }
+
+                # APKPURE check
+                logger.info('Performing Apkpure Check')
+                res = apkpure_api.is_valid_hash(
+                    man_data_dic['packagename'],
+                    man_data_dic['androvername'],
+                    cert_dic['certificate_info'])
+                if res:
+                    app_dic['abusech'].update({
+                        'apkpure': {'res': True,
+                                    'msg': 'Valid certificate SHA1 hash '
+                                    'found from Apkpure repository',
+                                    },
+                    })
+                else:
+                    app_dic['abusech'].update({
+                        'apkpure': {'res': False,
+                                    'msg':
+                                        'Certificate hash was not found, '
+                                        'confirm that certificate SHA1 hash '
+                                        'belongs to the original developer',
+                                    },
+                    })
 
                 app_dic['zipped'] = 'apk'
                 context = save_get_ctx(

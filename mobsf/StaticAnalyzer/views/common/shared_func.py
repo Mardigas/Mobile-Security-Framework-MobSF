@@ -71,7 +71,7 @@ def hash_gen(app_path) -> tuple:
 
 def unzip(app_path, ext_path):
 
-    invalid_names = ["prn"]
+    invalid_names = ['prn']
     contains_invalid_name = False
 
     logger.info('Unzipping')
@@ -81,7 +81,7 @@ def unzip(app_path, ext_path):
             for fileinfo in zipptr.infolist():
                 filename = fileinfo.filename
                 for name in invalid_names:
-                    rule = f".*\/{name}\..*"
+                    rule = f'.*\/{name}\..*'
                     if re.match(rule, filename, re.IGNORECASE):
                         contains_invalid_name = True
                 if contains_invalid_name:

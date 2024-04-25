@@ -207,7 +207,7 @@ def common_analysis(request, app_dic, rescan, api, analysis_type):
         context['code_analysis'])
     context['dynamic_analysis_done'] = False
     context['virus_total'] = None
-    context['abusech'] = ""
+    context['abusech'] = ''
     if settings.VT_ENABLED:
         vt = VirusTotal.VirusTotal()
         context['virus_total'] = vt.get_result(

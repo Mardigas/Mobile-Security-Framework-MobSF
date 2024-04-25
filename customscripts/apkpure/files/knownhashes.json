@@ -1,0 +1,32 @@
+{
+    "com.habito.edf": {
+        "hashes": [
+            "d51cffef0be7c368e425e9225311fe198bddb941"
+        ]
+    },
+    "ee.delfi": {
+        "hashes": [
+            "d99ed79b09f2439d488f914a1527f7744ee09437"
+        ]
+    },
+    "com.facebook.lite": {
+        "hashes": [
+            "8a3c4b262d721acd49a4bf97d5213199c86fa2b9"
+        ]
+    },
+    "com.waze": {
+        "hashes": [
+            "35b438fe1bc69d975dc8702dc16ab69ebf65f26f"
+        ]
+    },
+    "bbc.mobile.news.ww": {
+        "hashes": [
+            "25a95fddc952150c80b9c33ab8d17d8e8e139f40"
+        ]
+    },
+    "com.owlab.speakly": {
+        "hashes": [
+            "7a04b8997ecdb1a389f438ddd43fbd6661864c1b"
+        ]
+    }
+}
