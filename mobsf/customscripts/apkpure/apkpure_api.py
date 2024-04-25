@@ -8,7 +8,7 @@ HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
     'apkpure__lang': 'en',
 }
-HASHES = 'customscripts/apkpure/files/knownhashes.json'
+HASHES = 'mobsf/customscripts/apkpure/files/knownhashes.json'
 
 
 def make_request(url):

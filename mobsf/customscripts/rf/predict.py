@@ -38,7 +38,7 @@ def create_dataset(data):
             feature_index += 1
 
     api = data['android_api'].keys()
-    with open('customscripts/rf/rules/android_apis.yaml', 'r') as stream:
+    with open('mobsf/customscripts/rf/rules/android_apis.yaml', 'r') as stream:
         api_rules = yaml.safe_load(stream)
     for key in api_rules:
         if key['id'] not in EXCLUSIONS:
@@ -49,7 +49,7 @@ def create_dataset(data):
             feature_index += 1
 
     code = data['code_analysis']['findings'].keys()
-    with open('customscripts/rf/rules/android_rules.yaml', 'r') as stream:
+    with open('mobsf/customscripts/rf/rules/android_rules.yaml', 'r') as stream:
         code_rules = yaml.safe_load(stream)
 
     for key in code_rules:
@@ -65,7 +65,7 @@ def create_dataset(data):
 def predict(data):
 
     dataset = create_dataset(data)
-    model = joblib.load('customscripts/rf/trained_rf_model.joblib')
+    model = joblib.load('mobsf/customscripts/rf/trained_rf_model.joblib')
     res = model.predict_proba(dataset).tolist()[0]
 
     if res[1] >= 0.5:

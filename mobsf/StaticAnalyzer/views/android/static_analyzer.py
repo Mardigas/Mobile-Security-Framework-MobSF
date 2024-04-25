@@ -91,8 +91,8 @@ from mobsf.StaticAnalyzer.views.common.appsec import (
     get_android_dashboard,
 )
 
-from customscripts.abusech import abusech_api
-from customscripts.apkpure import apkpure_api
+from mobsf.customscripts.abusech import abusech_api
+from mobsf.customscripts.apkpure import apkpure_api
 
 logger = logging.getLogger(__name__)
 
