@@ -49,7 +49,8 @@ def create_dataset(data):
             feature_index += 1
 
     code = data['code_analysis']['findings'].keys()
-    with open('mobsf/customscripts/rf/rules/android_rules.yaml', 'r') as stream:
+    with open('mobsf/customscripts/rf/rules/android_rules.yaml',
+              'r') as stream:
         code_rules = yaml.safe_load(stream)
 
     for key in code_rules:

@@ -90,7 +90,6 @@ from mobsf.StaticAnalyzer.views.common.shared_func import (
 from mobsf.StaticAnalyzer.views.common.appsec import (
     get_android_dashboard,
 )
-
 from mobsf.customscripts.abusech import abusech_api
 from mobsf.customscripts.apkpure import apkpure_api
 

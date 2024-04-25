@@ -12,7 +12,6 @@ from mobsf.StaticAnalyzer.views.common.suppression import (
     process_suppression,
     process_suppression_manifest,
 )
-
 from mobsf.customscripts.rf import predict
 
 """Module holding the functions for the db."""
